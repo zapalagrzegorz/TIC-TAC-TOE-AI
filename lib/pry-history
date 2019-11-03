@@ -1,0 +1,4 @@
+load 'tic_tac_toe_node.rb'
+board = Board.new
+tttnode = TicTacToeNode.new(board, nil)
+tttnode.children

@@ -136,6 +136,7 @@ class TicTacToe
   def place_mark(pos, mark)
     if self.board.empty?(pos)
       self.board[pos] = mark
+
       true
     else
       false
