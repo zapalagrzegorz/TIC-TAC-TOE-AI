@@ -10,9 +10,47 @@ class TicTacToeNode
   end
 
   def losing_node?(evaluator)
+    # base case
+    if @board.over?
+      if @board.winner == evaluator || @board.tied?
+        return false
+      else
+        return true
+      end
+    end
+
+    # recursive case
+    #  It is the player's turn, and all the children nodes are losers for the player
+    #  (anywhere they move they still lose), OR
+    # It is the opponent's turn, and one of the children nodes is a losing node
+    # for the player (assumes your opponent plays perfectly; they'll force you to lose if they can).
+
+    #  when it's the player's turn
+    losing_node = Proc.new { |node| node.losing_node?(evaluator) }
+
+    if evaluator == :o
+      children.all?(&losing_node)
+    else
+      children.any?(&losing_node)
+    end
   end
 
   def winning_node?(evaluator)
+    if @board.over?
+      if @board.winner == evaluator || @board.tied?
+        return true
+      else
+        return false
+      end
+    end
+
+    winning_node = Proc.new { |node| node.winning_node?(evaluator) }
+
+    if evaluator == :x
+      children.any?(&winning_node)
+    else
+      children.all?(&winning_node)
+    end
   end
 
   # Generates an array of all moves that can be made after
